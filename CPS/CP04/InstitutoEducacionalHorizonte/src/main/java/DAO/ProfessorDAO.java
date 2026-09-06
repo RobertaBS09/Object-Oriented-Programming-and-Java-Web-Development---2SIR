@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ProfessorDAO implements GenericDAO<Professor, Integer> {
     @Override
     public void inserir(Professor professor) {
-        String sql = " insert into java_professor (id_professor,nome,aulas_semanais,valor_hora,salario) VALUES  (?,?,?,?)";
+        String sql = " insert into java_professor (id_professor,nome,aulas_semanais,valor_hora,salario) VALUES  (?,?,?,?,?)";
         try (
                 Connection connection = ConnectionFactory.obterConexao();
                 PreparedStatement ps = connection.prepareStatement(sql)
@@ -26,7 +26,8 @@ public class ProfessorDAO implements GenericDAO<Professor, Integer> {
             ps.setInt(1, professor.getId_professor());
             ps.setString(2, professor.getNome());
             ps.setInt(3, professor.getAulas_semanais());
-            ps.setDouble(4, professor.getSalario());
+            ps.setDouble(4, professor.getValor_hora());
+            ps.setDouble(5, professor.getSalario());
             ps.execute();
 
         } catch (SQLException e) {
