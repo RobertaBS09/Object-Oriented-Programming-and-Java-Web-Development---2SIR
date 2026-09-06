@@ -68,7 +68,7 @@ public class ProfessorDAO implements GenericDAO<Professor, Integer> {
     @Override
     public Professor buscarPorId(Integer id) {
 
-        String sql = "select * from java_professor where id = ?";
+        String sql = "select * from java_professor where id_professor = ?";
 
         try (Connection conn = ConnectionFactory.obterConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -99,7 +99,7 @@ public class ProfessorDAO implements GenericDAO<Professor, Integer> {
     }
 
     public int gerarProximoId(Connection conn) throws SQLException {
-        String sql = "SELECT MAX(id_professor) AS maior_id FROM professor";
+        String sql = "SELECT MAX(id_professor) AS maior_id FROM java_professor";
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
