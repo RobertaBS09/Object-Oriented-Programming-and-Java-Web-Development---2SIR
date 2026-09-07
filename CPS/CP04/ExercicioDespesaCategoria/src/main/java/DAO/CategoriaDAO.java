@@ -13,12 +13,12 @@ import java.util.List;
 public class CategoriaDAO implements GenericDAO<Categoria, Integer> {
     @Override
     public void inserir(Categoria categoria) {
-        String sql = "insert into java_categoria (categoria) VALUES ?)";
+        String sql = "insert into java_categoria (categoria) VALUES (?)";
 
         try (Connection connection = ConnectionFactory.obterConexao();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setString(2, categoria.getCategoria());
+            ps.setString(1, categoria.getCategoria());
 
             ps.execute();
 

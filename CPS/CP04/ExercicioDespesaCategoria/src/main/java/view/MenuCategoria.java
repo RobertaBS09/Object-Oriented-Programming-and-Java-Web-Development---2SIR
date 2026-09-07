@@ -86,7 +86,7 @@ public class MenuCategoria {
         String aux = "";
 
         for (Categoria c : lista) {
-            aux = +c.getId() + " | " + c.getCategoria() + "\n";
+            aux += c.getId() + " | " + c.getCategoria() + "\n";
         }
 
         showMessageDialog(null, aux);
