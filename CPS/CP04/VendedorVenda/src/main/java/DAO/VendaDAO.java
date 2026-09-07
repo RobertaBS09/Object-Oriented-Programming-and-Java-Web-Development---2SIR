@@ -35,7 +35,7 @@ public class VendaDAO implements GenericDAO<Venda, Integer> {
     @Override
     public List<Venda> listar() {
         List<Venda> lista = new ArrayList<>();
-        String sql = "select v.nome , vd.total ,vd.data from java_vendedor v inner join java_venda on v.id_vendedor = vd.id";
+        String sql = "select vd.id_venda, v.nome, vd.total, vd.data from java_vendedor v inner join java_venda vd on v.id_vendedor = vd.id_vendedor";
 
         try (Connection connection = ConnectionFactory.obterConexao();
              PreparedStatement ps = connection.prepareStatement(sql);
@@ -45,6 +45,7 @@ public class VendaDAO implements GenericDAO<Venda, Integer> {
                 Vendedor vendedor = new Vendedor();
                 Venda venda = new Venda();
 
+                venda.setId_venda(rs.getInt("id_venda"));
                 vendedor.setNome(rs.getString("nome"));
                 venda.setTotal(rs.getDouble("total"));
                 venda.setData(rs.getDate("data").toLocalDate());

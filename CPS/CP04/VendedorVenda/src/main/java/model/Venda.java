@@ -49,4 +49,9 @@ public class Venda {
     public void setData(LocalDate data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return id_venda + " - " + (vendedor != null ? vendedor.getNome() : "") + " - R$" + total + " - " + data;
+    }
 }

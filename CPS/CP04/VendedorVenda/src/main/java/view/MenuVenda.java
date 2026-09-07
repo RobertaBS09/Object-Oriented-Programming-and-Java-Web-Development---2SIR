@@ -43,21 +43,22 @@ public class MenuVenda {
 
     private void remover() {
 
-        List<Vendedor> lista= new VendedorDAO().listar();
-        Vendedor vendedor;
+        List<Venda> lista = new VendaDAO().listar();
 
-        vendedor = (Vendedor) showInputDialog(null,
-                "Selecione um vendedor",
-                "--Vendedores--",
+        if (lista.isEmpty()) {
+            showMessageDialog(null, "Nenhuma venda cadastrada.");
+            return;
+        }
+
+        Venda venda = (Venda) showInputDialog(null,
+                "Selecione a venda a remover",
+                "--Vendas--",
                 INFORMATION_MESSAGE,
                 null,
                 lista.toArray(),
                 lista.get(0));
 
-        Integer id_vendedor = vendedor.getId_vendedor();
-
-        new VendaDAO().remover(id_vendedor);
-
+        new VendaDAO().remover(venda.getId_venda());
     }
 
     private void listar() {
@@ -66,7 +67,7 @@ public class MenuVenda {
         String aux="";
 
         for (Venda v: lista){
-            aux+= v.getVendedor().getNome() + " | Total: R$" + v.getTotal();
+            aux+= v.getVendedor().getNome() + " | Total: R$" + v.getTotal() +"\n";
         }
         showMessageDialog(null,aux);
 

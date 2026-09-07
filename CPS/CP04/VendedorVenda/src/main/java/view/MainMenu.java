@@ -7,7 +7,8 @@ public class MainMenu {
     public void menu() {
 
         String[] opcoes = {"Menu Vendedor",
-                "Menu Venda"};
+                "Menu Venda",
+                "Finalizar"};
 
         String opcao;
 

@@ -1,6 +1,7 @@
 package DAO;
 
 import factory.ConnectionFactory;
+import model.Venda;
 import model.Vendedor;
 
 import java.sql.Connection;
@@ -47,10 +48,8 @@ public class VendedorDAO implements GenericDAO<Vendedor, Integer> {
                 lista.add(vendedor);
             }
 
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
 
         return lista;
@@ -59,7 +58,7 @@ public class VendedorDAO implements GenericDAO<Vendedor, Integer> {
     @Override
     public Optional atualizar(Vendedor entidade) {
 
-        String sql = "update java_vendedor set nome =? where id = ?";
+        String sql = "update java_vendedor set nome =? where id_vendedor = ?";
 
         try (Connection connection = ConnectionFactory.obterConexao();
             PreparedStatement ps = connection.prepareStatement(sql)){
@@ -79,7 +78,7 @@ public class VendedorDAO implements GenericDAO<Vendedor, Integer> {
     @Override
     public void remover(Integer id) {
 
-        String sql = "delete from java_vendedor where id = ? ";
+        String sql = "delete from java_vendedor where id_vendedor = ? ";
 
         try(Connection connection = ConnectionFactory.obterConexao();
             PreparedStatement ps = connection.prepareStatement(sql)){

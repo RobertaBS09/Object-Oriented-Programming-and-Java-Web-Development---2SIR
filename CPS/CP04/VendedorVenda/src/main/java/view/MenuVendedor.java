@@ -64,10 +64,14 @@ public class MenuVendedor {
 
     private void remover() {
 
-        List<Vendedor> lista= new VendedorDAO().listar();
-        Vendedor vendedor;
+        List<Vendedor> lista = new VendedorDAO().listar();
 
-        vendedor = (Vendedor) showInputDialog(null,
+        if (lista.isEmpty()) {
+            showMessageDialog(null, "Nenhum vendedor cadastrado.");
+            return;
+        }
+
+        Vendedor vendedor = (Vendedor) showInputDialog(null,
                 "Selecione um vendedor",
                 "--Vendedores--",
                 INFORMATION_MESSAGE,
@@ -78,19 +82,17 @@ public class MenuVendedor {
         Integer id_vendedor = vendedor.getId_vendedor();
 
         new VendedorDAO().remover(id_vendedor);
-
     }
 
     private void listar() {
         List<Venda> lista = new VendaDAO().listar();
 
-        String aux="";
+        String aux = "";
 
-        for (Venda v: lista){
-            aux+= v.getVendedor().getNome() + " | Data Venda: " + v.getData();
+        for (Venda v : lista) {
+            aux += v.getVendedor().getNome() + " | Total: R$" + v.getTotal() + " | Data: " + v.getData() + "\n";
         }
-        showMessageDialog(null,aux);
-
+        showMessageDialog(null, aux);
     }
 
     private void cadastrar() {
