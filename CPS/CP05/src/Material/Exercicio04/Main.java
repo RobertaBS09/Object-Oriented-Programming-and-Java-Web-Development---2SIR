@@ -1,7 +1,6 @@
 package Material.Exercicio04;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -22,12 +21,12 @@ public class Main {
         ListaRatings.forEach(System.out::println);
         System.out.println("------------------------------------------\n");
 
-        List<Produto>ListaDesconto = listaInicial.stream()
+        List<Produto> ListaDesconto = listaInicial.stream()
                 .map(produto -> {
 
                     double novoPreco;
 
-                    if (produto.categoria().equalsIgnoreCase("Eletônico")) {
+                    if (produto.categoria().equalsIgnoreCase("Eletrônico")) {
                         novoPreco = produto.preco() * 0.85;
                     } else {
                         novoPreco = produto.preco() * 0.9;
@@ -36,20 +35,54 @@ public class Main {
                 }).toList();
 
 
-
-
         System.out.println("------Produtos com Desconto: ------");
         ListaDesconto.forEach(System.out::println);
         System.out.println("------------------------------------------\n");
 
 
+        Map<String, DoubleSummaryStatistics> resumo = ListaDesconto.stream()
+                .collect(Collectors.groupingBy(
+                        Produto::categoria,
+                        Collectors.summarizingDouble(Produto::preco)
+                ));
 
 
+        System.out.println("------Produtos por categoria: ------");
+
+        resumo.forEach((cat, st) ->
+                System.out.println(cat + " | qtd=" + st.getCount()
+                        + " | soma=" + st.getSum()
+                        + " | média=" + st.getAverage()
+                        + " | mín=" + st.getMin()
+                        + " | máx=" + st.getMax()));
+
+        System.out.println("------------------------------------------\n");
 
 
+        System.out.println("------Produtos em cada categoria: ------");
+
+        Map<String, List<Produto>> grupos = ListaDesconto.stream()
+                .collect(Collectors.groupingBy(Produto::categoria));
+
+        grupos.forEach((cat, produtos) -> {
+            System.out.println(cat);
+            produtos.stream()
+                    .sorted(Comparator.comparing(Produto::preco).reversed())
+                    .forEach(p -> System.out.println("  " + p.nome() + " - " + p.preco()));
+        });
+
+        System.out.println("------------------------------------------\n");
+
+        System.out.println("------Top 3 produtos: ------");
+        List<Produto> top3 = ListaDesconto.stream()
+                .sorted(Comparator.comparing(Produto::preco).reversed())
+                .limit(3)
+                .toList();
+
+        top3.forEach(System.out::println);
+
+        System.out.println("------------------------------------------\n");
 
 
-
-
-                }
+    }
 }
