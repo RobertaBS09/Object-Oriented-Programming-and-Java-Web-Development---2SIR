@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Aula08-2204" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Aula13-0308/13-BancoDeDados-Exercicio/01-VendedorVenda" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Aula14-0209" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Aula14-0209/14-Collections" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/CPS/CP02/BeanCodeCafe-ExercicioCP02" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/CPS/CP02/Cp02" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/CPS/CP02/Exercicio02MOCKADO" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/CPS/CP03" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPS/CP03/10-Polimorfismo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GS/GS01" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Trabalhos/GS_kloh" vcs="Git" />
   </component>
 </project>
