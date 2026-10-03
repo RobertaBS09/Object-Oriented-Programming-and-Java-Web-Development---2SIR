@@ -81,7 +81,7 @@ public class MenuVenda {
         String data;
         Vendedor vendedor;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         vendedor = (Vendedor) showInputDialog(null,
                 "Selecione um vendedor",
