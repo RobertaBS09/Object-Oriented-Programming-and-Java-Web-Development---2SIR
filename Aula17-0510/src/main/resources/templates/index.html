@@ -1,10 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 26px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 200% 200%;
+            animation: fundo 15s ease infinite;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        @keyframes fundo {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Bolhas de luz no fundo */
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.55;
+            z-index: 0;
+            animation: flutuar 12s ease-in-out infinite;
+        }
+
+        body::before {
+            width: 380px;
+            height: 380px;
+            background: #ff3cac;
+            top: -100px;
+            left: -100px;
+        }
+
+        body::after {
+            width: 420px;
+            height: 420px;
+            background: #2b86c5;
+            bottom: -120px;
+            right: -100px;
+            animation-delay: -6s;
+        }
+
+        @keyframes flutuar {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50%      { transform: translate(40px, 30px) scale(1.15); }
+        }
+
+        h1 {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #a18cd1, #66a6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: entrada 0.8s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        form {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 28px;
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            box-shadow:
+                    0 25px 60px rgba(0, 0, 0, 0.45),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            animation: entrada 0.9s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        @keyframes entrada {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px 18px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:hover,
+        select:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #a18cd1;
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 0 0 4px rgba(161, 140, 209, 0.28),
+            0 0 24px rgba(161, 140, 209, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* remove setinhas do input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='white' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+        }
+
+        select option {
+            background: #1f1b3a;
+            color: #fff;
+        }
+
+        button {
+            margin-top: 6px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #ff6a88, #a18cd1 55%, #66a6ff);
+            background-size: 200% 200%;
+            box-shadow: 0 12px 28px rgba(161, 140, 209, 0.45);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.6s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            background-position: 100% 0;
+            box-shadow: 0 18px 36px rgba(161, 140, 209, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 6px 14px rgba(161, 140, 209, 0.45);
+        }
+
+        .resultado {
+            position: relative;
+            z-index: 1;
+            padding: 18px 32px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            animation: entrada 0.6s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        @media (max-width: 480px) {
+            form { padding: 28px 22px; }
+            h1 { font-size: 1.9rem; }
+        }
+        .erro {
+            position: relative;
+            z-index: 1;
+            padding: 18px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            color: #ffb3b3;
+            background: rgba(255, 80, 80, 0.15);
+            border: 1px solid rgba(255, 120, 120, 0.4);
+            border-radius: 18px;
+            backdrop-filter: blur(16px);
+            animation: entrada 0.6s cubic-bezier(.2, .8, .2, 1);
+        }
+    </style>
 </head>
 <body>
-$END$
+<h1> Calculadora </h1>
+<form th:action="@{/calculadora/calcular}" method="get">
+    <label>Número 1
+        <input type="number" name="n1" th:value="${num1}">
+    </label>
+
+    <label>Número 2
+        <input type="number" name="n2" th:value="${num2}">
+    </label>
+    <select name="operacao">
+        <option value="adicionar" th:selected="${operacao == 'adicionar'}"> Adicionar </option>
+        <option value="subtrair" th:selected="${operacao == 'subtrair'}"> Subtrair </option>
+        <option value="multiplicar" th:selected="${operacao == 'multiplicar'}"> Multiplicar </option>
+        <option value="dividir" th:selected="${operacao == 'dividir'}"> Dividir </option>
+    </select>
+    <button type="submit"> Submeter </button>
+</form>
+
+<p class="resultado" th:if="${resultado != null}" th:text="'Resultado: ' + ${resultado}"></p>
+<p class="erro" th:if="${erro != null}" th:text="${erro}"></p>
 </body>
 </html>
