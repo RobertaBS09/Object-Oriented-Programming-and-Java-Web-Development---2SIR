@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicar desconto</title>
+</head>
+<body>
+    <h1>Aplicar desconto</h1>
+    <label>Valor
+        <input type="number" step="any" id="valor" name="valor">
+    </label>
+    <select id="cupom">
+        <option value="BEMVINDO">BEMVINDO (10%)</option>
+        <option value="FIAP20">FIAP20 (20%)</option>
+        <option value="METADE">METADE (50%)</option>
+    </select>
+
+    <button onclick="calcular()"> Enviar </button>
+
+    <p id="resultado"></p>
+
+    <script>
+        async function calcular(){
+            const valor = document.getElementById("valor").value;
+            const cupom = document.getElementById("cupom").value;
+            const campo =document.getElementById("resultado")
+
+
+            if (valor ===""|| cupom === ""){
+                campo.textContent = "Preencha valor e cupom!";
+                return;
+            }
+
+            const resposta = await fetch(`  /calcular/descontar?valor=${valor}&cupom=${cupom}`);
+            const dados = await resposta.json();
+
+            if (resposta.ok){
+                campo.textContent = `Original: ${dados.original.toFixed(2)} | Desconto: ${dados.desconto.toFixed(2)} | Final: ${dados.final.toFixed(2)}`;
+            }
+            else {
+                campo.textContent = "Erro: " + dados.message;
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
+

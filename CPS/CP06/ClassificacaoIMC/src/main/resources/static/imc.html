@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Classificação de IMC</title>
+</head>
+<body>
+<h1>Classificação de IMC</h1>
+
+<label>Peso <input type="number" step="any" id="peso"></label>
+<label>Altura <input type="number" step="any" id="altura"></label>
+<button onclick="calcular()">Classificar</button>
+
+<p id="resultado"></p>
+
+<script>
+    async function calcular() {
+        // 1. lê os campos
+        const peso = document.getElementById("peso").value;
+        const altura = document.getElementById("altura").value;
+        const campo = document.getElementById("resultado");
+
+        // 2. valida antes de chamar o servidor
+        if (peso === "" || altura === "") {
+            campo.textContent = "Preencha peso e altura";
+            return;
+        }
+
+        // 3. chama a API (mesma URL que você testou no navegador)
+        const resposta = await fetch(`/api/imc/classificar?peso=${peso}&altura=${altura}`);
+        const dados = await resposta.json();
+
+        // 4. mostra o resultado ou o erro
+        if (resposta.ok) {
+            campo.textContent = `IMC: ${dados.imc.toFixed(2)} - ${dados.classificacao}`;
+        } else {
+            campo.textContent = "Erro: " + dados.message;
+        }
+    }
+</script>
+</body>
+</html>

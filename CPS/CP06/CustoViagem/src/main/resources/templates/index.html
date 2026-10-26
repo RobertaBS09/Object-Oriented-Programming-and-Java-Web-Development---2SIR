@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Custo Viagem</title>
+</head>
+<body>
+<h1>Custo da Viagem</h1>
+
+<form th:action="@{/viagem/calcular}" method="get">
+    <label>Distância (km):
+        <input type="number" step="any" name="distancia" th:value="${distancia}">
+    </label>
+    <label>Consumo (km/l):
+        <input type="number" step="any" name="consumo" th:value="${consumo}">
+    </label>
+    <select name="combustivel">
+        <option value="gasolina" th:selected="${combustivel == 'gasolina'}">Gasolina</option>
+        <option value="etanol" th:selected="${combustivel == 'etanol'}">Etanol</option>
+        <option value="diesel" th:selected="${combustivel == 'diesel'}">Diesel</option>
+    </select>
+    <button type="submit">Calcular</button>
+</form>
+
+<!-- checa custo, que é o que o controller manda -->
+<p class="resultado" th:if="${custo != null}"
+   th:text="${#numbers.formatDecimal(litros,1,2)} + ' L de ' + ${combustivel} + ' = R$ ' + ${#numbers.formatDecimal(custo,1,2)}"></p>
+
+<!-- aviso só existe no Model quando o custo passa de 500 -->
+<p class="aviso" th:if="${aviso != null}" th:text="${aviso}"></p>
+
+<p class="erro" th:if="${erro != null}" th:text="'Erro: ' + ${erro}"></p>
+</body>
+</html>

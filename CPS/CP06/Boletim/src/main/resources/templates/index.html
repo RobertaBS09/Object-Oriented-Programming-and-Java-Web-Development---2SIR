@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Boletim</title>
+    <style>
+        .aprovado  { color: green; }
+        .exame     { color: orange; }
+        .reprovado { color: red; }
+        .erro      { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Boletim</h1>
+
+<!-- th:action + method: tem que bater com o @GetMapping -->
+<form th:action="@{/boletim/calcular}" method="get">
+    <label>Nome <input type="text" name="nome" th:value="${nome}" required></label>
+    <label>Nota 1 <input type="number" step="any" name="n1" th:value="${n1}" required></label>
+    <label>Nota 2 <input type="number" step="any" name="n2" th:value="${n2}" required></label>
+
+    <!-- texto entre aspas simples; número sem aspas -->
+    <select name="tipo">
+        <option value="simples"   th:selected="${tipo == 'simples'}">Simples</option>
+        <option value="ponderada" th:selected="${tipo == 'ponderada'}">Ponderada</option>
+    </select>
+
+    <button type="submit">Calcular</button>
+</form>
+
+<!-- bloco inteiro só aparece se a média existir -->
+<div th:if="${media != null}">
+
+    <p th:text="${nome} + ' - média ' + ${#numbers.formatDecimal(media, 1, 2)}"></p>
+
+    <!-- ternário: escolhe a classe (cor) conforme a situação -->
+    <p th:text="${situacao}"
+       th:classappend="${situacao == 'Aprovado' ? 'aprovado' : (situacao == 'Exame' ? 'exame' : 'reprovado')}"></p>
+
+    <!-- th:if / th:unless: aparece um OU o outro -->
+    <p th:if="${media >= 6}">Parabéns!</p>
+    <p th:unless="${media >= 6}">
+        Faltaram <span th:text="${#numbers.formatDecimal(6 - media, 1, 2)}"></span> pontos.
+    </p>
+</div>
+
+<p class="erro" th:if="${erro != null}" th:text="${erro}"></p>
+
+<h2>Histórico</h2>
+
+<!-- lista vazia × lista com itens -->
+<p th:if="${historico.isEmpty()}">Nenhum cálculo ainda.</p>
+
+<table th:unless="${historico.isEmpty()}" border="1">
+    <tr><th>#</th><th>Registro</th></tr>
+    <!-- item = cada elemento; stat.count = número da linha (1, 2, 3...) -->
+    <tr th:each="item, stat : ${historico}">
+        <td th:text="${stat.count}">1</td>
+        <td th:text="${item}">registro</td>
+    </tr>
+</table>
+
+<p>
+    <a th:href="@{/boletim/limpar}">Limpar histórico</a> |
+    <a th:href="@{/boletim.html}">Versão JavaScript</a>
+</p>
+</body>
+</html>

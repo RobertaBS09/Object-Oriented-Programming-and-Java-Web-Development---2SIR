@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ConversorDeTemperatura</title>
+</head>
+<body>
+<h1> Conversor de Temperatura</h1>
+<form th:action="@{/conversor/converter}" method="get">
+    <label>Valor
+        <input type="number" step="any" name="valor" th:value="${valor}">
+    </label>
+
+    <select name="tipo">
+        <option value="c-f" th:selected="${tipo == 'c-f'}">Celsius -> Fahrenheit</option>
+        <option value="f-c" th:selected="${tipo == 'f-c'}">Fahrenheit -> Celsius</option>
+        <option value="c-k" th:selected="${tipo == 'c-k'}">Celsius -> Kelvin</option>
+    </select>
+    <button  type="submit"> Submeter </button>
+</form>
+
+<p class="resultado" th:if="${resultado != null}" th:text="'Resultado: ' + ${#numbers.formatDecimal(resultado, 1, 2)}"></p>
+<p class="erro" th:if="${erro!=null}" th:text="'Erro:'+${erro}"></p>
+</body>
+</html>

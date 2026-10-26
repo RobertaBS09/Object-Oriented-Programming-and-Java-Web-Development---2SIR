@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Calcular Parcelas</title>
+</head>
+<body>
+    <h1> Calcular Parcelas</h1>
+
+    <form th:action="@{/parcelamento/parcelar}">
+        <label>
+            Valor
+            <input type="number" step="any" name="valor" th:value="${valor}">
+        </label>
+
+
+        <select name="parcelas">
+            <option value="1" th:selected="${parcelas == 1}">1</option>
+            <option value="3" th:selected="${parcelas == 3}">3</option>
+            <option value="6" th:selected="${parcelas == 6}">6</option>
+            <option value="12" th:selected="${parcelas == 12}">12</option>
+        </select>
+
+
+        <button type="submit">Submeter</button>
+
+    </form>
+
+<p class="resultado" th:if="${resultado!= null}" th:text="'Valor: '+ ${#numbers.formatDecimal(valor,1,2)}+ ' | Parcelas: '+${parcelas} +' |Esperado: '+${parcelas} + 'x de R$'+${#numbers.formatDecimal(totalparcelas,1,2)}+ ' (total R$'+${resultado}+' )'"></p>
+<p class="erro" th:if="${erro !=null}" th:text="'Erro:'+${erro}"></p>
+</body>
+</html>

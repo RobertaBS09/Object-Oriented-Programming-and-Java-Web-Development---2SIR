@@ -1,0 +1,26 @@
+<script>
+    async function calcular() {
+        const distancia = document.getElementById("distancia").value;
+        const consumo = document.getElementById("consumo").value;
+        const combustivel = document.getElementById("combustivel").value;
+        const resultado = document.getElementById("resultado");
+
+        if (distancia === "" || consumo === "") {
+            resultado.textContent = "Preencha todos os valores!";
+            return;   // faltava: sem ele o fetch roda mesmo assim
+        }
+
+        const resposta = await fetch(`/api/viagem?distancia=${distancia}&consumo=${consumo}&combustivel=${combustivel}`);
+        const dados = await resposta.json();
+
+        if (resposta.ok) {
+            // só as chaves que existem no Map.of: litros, combustivel, custo
+            resultado.textContent = `${dados.litros.toFixed(2)} L de ${dados.combustivel} = R$ ${dados.custo.toFixed(2)}`;
+            if (dados.custo > 500) {
+                resultado.textContent += " | Viagem cara! Considere dividir com alguém.";   // += acrescenta
+            }
+        } else {
+            resultado.textContent = "Erro: " + dados.message;
+        }
+    }
+</script>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambio</title>
+</head>
+<body>
+    <h1>Cambio</h1>
+    <label>Reais
+        <input type="number" step="any" id="reais" name="reais">
+    </label>
+    <select id="moeda">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+    </select>
+
+    <button onclick="calcular()"> Calcular</button>
+    <p id="resultado"></p>
+
+    <script>
+        async function calcular(){
+            const moeda = document.getElementById("moeda").value
+            const reais = document.getElementById("reais").value
+            const resultado = document.getElementById("resultado")
+
+            if (moeda === "" || reais === ""){
+                campo.textContent="Preencha Reais e Moeda!"
+                return
+            }
+
+            const resposta = await fetch(`/api/cambio?reais=${reais}&moeda=${moeda}`)
+            const dados =await resposta.json();
+
+            if (resposta.ok){
+                resultado.textContent=`Reais: ${dados.reais} | Moeda: ${dados.moeda} | Convertido: ${dados.convertido}`
+            }else {
+                resultado.textContent = "Erro: " + dados.message;
+            }
+        }
+    </script>
+</body>
+</html>

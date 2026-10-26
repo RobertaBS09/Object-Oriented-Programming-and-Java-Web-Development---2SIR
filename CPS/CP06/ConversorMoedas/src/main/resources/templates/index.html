@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset=" UTF-8">
+<title>Conversor Moedar</title>
+</head>
+<body>
+<h1>Cambio</h1>
+
+<form th:action="@{/cambio/converter}">
+    <label> Reais:
+        <input type="number" step="any" name="reais" th:value="${reais}">
+    </label>
+
+    <select name="moeda">
+        <option value="USD" th:selected="${moeda == 'USD'}">USD</option>
+        <option value="EUR" th:selected="${moeda == 'EUR'}">EUR</option>
+        <option value="GBP" th:selected="${moeda == 'GBP'}">GBP</option>
+    </select>
+
+    <button type="submit">Enviar</button>
+
+
+</form>
+<p class="resultado" th:if="${resultado!=null}" th:text="'Reais: '+${#numbers.formatDecimal(reais,1,2)} + ' | Moeda: '+${moeda}+ ' | Esperado: '+${#numbers.formatDecimal(resultado,1,2)}"></p>
+<p class="erro" th:if="${erro!= null}" th:text="'Erro: '+${erro}"></p>
+</body>
+</html>
