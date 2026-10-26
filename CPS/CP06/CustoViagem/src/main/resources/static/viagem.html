@@ -1,3 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Custo Viagem (JS)</title>
+</head>
+<body>
+<h1>Custo da Viagem</h1>
+
+<!-- sem form, sem th: e sem name: o JS acha pelo id -->
+<label>Distância (km):
+    <input type="number" step="any" id="distancia">
+</label>
+<label>Consumo (km/l):
+    <input type="number" step="any" id="consumo">
+</label>
+<select id="combustivel">
+    <option value="gasolina">Gasolina</option>
+    <option value="etanol">Etanol</option>
+    <option value="diesel">Diesel</option>
+</select>
+<button onclick="calcular()">Calcular</button>
+
+<p id="resultado"></p>
+
 <script>
     async function calcular() {
         const distancia = document.getElementById("distancia").value;
@@ -7,20 +32,21 @@
 
         if (distancia === "" || consumo === "") {
             resultado.textContent = "Preencha todos os valores!";
-            return;   // faltava: sem ele o fetch roda mesmo assim
+            return;
         }
 
         const resposta = await fetch(`/api/viagem?distancia=${distancia}&consumo=${consumo}&combustivel=${combustivel}`);
         const dados = await resposta.json();
 
         if (resposta.ok) {
-            // só as chaves que existem no Map.of: litros, combustivel, custo
             resultado.textContent = `${dados.litros.toFixed(2)} L de ${dados.combustivel} = R$ ${dados.custo.toFixed(2)}`;
             if (dados.custo > 500) {
-                resultado.textContent += " | Viagem cara! Considere dividir com alguém.";   // += acrescenta
+                resultado.textContent += " | Viagem cara! Considere dividir com alguém.";
             }
         } else {
             resultado.textContent = "Erro: " + dados.message;
         }
     }
 </script>
+</body>
+</html>
